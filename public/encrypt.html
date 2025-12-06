@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Encryption</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="style.css"/>
+
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: black;
+    }
+
+    /* Sleek neon scrollbar */
+    .encryption-scroll::-webkit-scrollbar {
+      width: 6px;
+    }
+    .encryption-scroll::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+    }
+    .encryption-scroll::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #3b82f6, #9333ea);
+      border-radius: 10px;
+      box-shadow: 0 0 8px #3b82f6;
+    }
+    .encryption-scroll::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(180deg, #60a5fa, #a855f7);
+    }
+
+    /* Shift Input Neon Styling */
+    .shift-input {
+      background: #111;
+      border: 1px solid #3b82f6;
+      padding: 10px 14px;
+      border-radius: 10px;
+      color: #93c5fd;
+      font-size: 16px;
+      outline: none;
+      transition: 0.2s;
+      box-shadow: 0 0 10px rgba(59, 130, 246, 0.4);
+    }
+    .shift-input:focus {
+      border-color: #9333ea;
+      box-shadow: 0 0 12px #9333ea;
+    }
+    .shift-input::-webkit-inner-spin-button,
+    .shift-input::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    .shift-input[type=number] {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: textfield;
+    }
+
+    /* Help Button */
+    .help-btn {
+      background: #a020f0;
+      padding: 10px 18px;
+      border-radius: 12px;
+      color: white;
+      font-weight: bold;
+      box-shadow: 0 0 12px #a020f0;
+      transition: 0.2s;
+    }
+    .help-btn:hover {
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+
+<body class="text-blue-300 h-screen w-screen flex items-center justify-center">
+
+<!-- HELP BUTTON -->
+<button onclick="openHelp()" class="help-btn fixed top-4 right-4 z-50">❓ Help</button>
+
+<!-- MAIN CONTAINER -->
+<div class="w-[90%] max-w-4xl h-[90%] bg-neutral-900 rounded-xl shadow-neon p-6
+            grid grid-rows-[auto_1fr_auto] gap-4">
+
+
+  <!-- HEADER WITH BACK BUTTON + CENTERED TITLE -->
+  <div class="flex items-center justify-between mb-2">
+
+    <!-- BACK BUTTON -->
+    <button onclick="location.href='index.html'"
+            class="btn neon-btn-green h-10 px-4">
+      ⬅ Back
+    </button>
+
+    <!-- TITLE -->
+    <h2 class="text-3xl font-bold text-blue-400 text-center flex-1">
+      🔐 Encryption
+    </h2>
+
+    <!-- Spacer to keep title centered -->
+    <div class="w-20"></div>
+  </div>
+
+
+  <!-- SCROLLABLE CONTENT -->
+  <div class="encryption-scroll overflow-y-auto pr-2 space-y-4">
+
+      <!-- PLAINTEXT -->
+      <div>
+        <label class="label">Plaintext Message</label>
+        <textarea id="plaintext" class="input neon-input h-28 resize-none"
+          placeholder="Type message to encrypt..."></textarea>
+      </div>
+
+      <!-- SHIFT + ENCRYPT -->
+      <div>
+        <label class="label">Caesar Shift</label>
+        <div class="flex items-center gap-3">
+          <input id="shift" type="number" value="3"
+                 class="shift-input encryption-scroll w-24"/>
+
+          <button id="encryptBtn"
+                  class="btn neon-btn-blue flex-1 h-12 text-lg">
+            Encrypt
+          </button>
+        </div>
+      </div>
+
+      <!-- ENCRYPTED TEXT -->
+      <div>
+        <label class="label">Encrypted Text</label>
+        <textarea id="encrypted" class="input neon-input h-28 resize-none" readonly></textarea>
+      </div>
+
+      <!-- CRYPTO KEY -->
+      <div>
+        <label class="label text-red-400">Crypto Key (Share Securely)</label>
+        <textarea id="cryptoKey" class="input neon-input h-28 resize-none" readonly></textarea>
+      </div>
+  </div>
+
+
+  <!-- FOOTER -->
+  <div class="flex justify-between items-center">
+    
+    <!-- QR PREVIEW + DOWNLOAD -->
+    <div class="flex items-center gap-3">
+      <img id="qrImage" class="w-28 h-28 bg-black rounded-xl shadow-neon"/>
+      <button id="downloadQR" class="btn neon-btn-purple hidden h-12">
+        Download QR
+      </button>
+    </div>
+
+    <!-- BACK BUTTON REMOVED FROM FOOTER (NOW ON TOP) -->
+  </div>
+
+</div>
+
+
+<!-- HELP MODAL -->
+<div id="helpModal"
+     class="fixed inset-0 bg-black/70 hidden flex justify-center items-center z-50">
+  <div class="bg-neutral-900 p-6 rounded-xl shadow-neon w-[85%] max-w-xl">
+
+    <h2 class="text-2xl font-bold text-blue-400 mb-4">📘 How to Encrypt</h2>
+
+    <p>➡ Type your message.</p>
+    <p>➡ Enter a Caesar Shift number (e.g., 3).</p>
+    <p>➡ Press <b>Encrypt</b>.</p>
+    <p>➡ Copy the Crypto Key — the receiver needs it.</p>
+    <p>➡ Download the QR code and share it securely.</p>
+
+    <button onclick="closeHelp()" class="btn neon-btn-blue w-full mt-4">Close</button>
+  </div>
+</div>
+
+
+<!-- LOAD JS -->
+<script type="module">
+  window.addEventListener("DOMContentLoaded", () => import("./app-encrypt.js"));
+</script>
+
+<script>
+function openHelp() { document.getElementById("helpModal").classList.remove("hidden"); }
+function closeHelp() { document.getElementById("helpModal").classList.add("hidden"); }
+</script>
+
+</body>
+</html>

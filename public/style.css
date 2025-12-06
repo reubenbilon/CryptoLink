@@ -1,0 +1,168 @@
+/* ============================
+   GLOBAL NEON THEME
+=============================== */
+
+body {
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Neon box shadow template */
+  .shadow-neon {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+  }
+  
+  /* Label styling */
+  .label {
+    font-size: 14px;
+    color: #93c5fd;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 4px;
+  }
+  
+  /* ============================
+     INPUT FIELDS
+  =============================== */
+  
+  .input {
+    width: 100%;
+    padding: 12px;
+    background: #0a0a0a;
+    border: 1px solid #3b82f6;
+    border-radius: 10px;
+    color: #93c5fd;
+    resize: none;
+    outline: none;
+    transition: 0.2s ease;
+  }
+  
+  .input:focus {
+    border-color: #9333ea;
+    box-shadow: 0 0 10px #9333ea;
+  }
+  
+  /* Neon textarea */
+  .neon-input {
+    background: #090909;
+    box-shadow: inset 0 0 10px rgba(59, 130, 246, 0.3);
+  }
+  
+  /* ============================
+     SHIFT INPUT (SPECIAL STYLE)
+  =============================== */
+  
+  .shift-input {
+    background: #111;
+    border: 1px solid #3b82f6;
+    padding: 10px 14px;
+    border-radius: 10px;
+    color: #93c5fd;
+    font-size: 16px;
+    outline: none;
+    transition: 0.2s;
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.4);
+  }
+  
+  .shift-input:focus {
+    border-color: #9333ea;
+    box-shadow: 0 0 12px #9333ea;
+  }
+  
+  /* Remove number arrows (Chrome + Firefox) */
+  .shift-input::-webkit-inner-spin-button,
+  .shift-input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  .shift-input[type=number] {
+    -moz-appearance: textfield;
+  }
+  
+  /* ============================
+     BUTTONS
+  =============================== */
+  
+  .btn {
+    padding: 10px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s ease;
+  }
+  
+  .neon-btn-blue {
+    background: #2563eb;
+    color: white;
+    box-shadow: 0 0 10px #2563eb;
+  }
+  .neon-btn-blue:hover {
+    box-shadow: 0 0 15px #3b82f6;
+  }
+  
+  .neon-btn-green {
+    background: #22c55e;
+    color: white;
+    box-shadow: 0 0 10px #22c55e;
+  }
+  .neon-btn-green:hover {
+    box-shadow: 0 0 15px #4ade80;
+  }
+  
+  .neon-btn-purple {
+    background: #9333ea;
+    color: white;
+    box-shadow: 0 0 10px #9333ea;
+  }
+  .neon-btn-purple:hover {
+    box-shadow: 0 0 15px #a855f7;
+  }
+  
+  /* ============================
+     HELP BUTTON
+  =============================== */
+  
+  .help-btn {
+    background: #a020f0;
+    padding: 10px 18px;
+    border-radius: 12px;
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 0 12px #a020f0;
+    transition: 0.2s;
+  }
+  
+  .help-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px #c558ff;
+  }
+  
+  /* ============================
+     SLEEK NEON SCROLLBAR
+  =============================== */
+  
+  .encryption-scroll::-webkit-scrollbar {
+    width: 6px;
+  }
+  .encryption-scroll::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+  }
+  .encryption-scroll::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #3b82f6, #9333ea);
+    border-radius: 10px;
+    box-shadow: 0 0 8px #3b82f6;
+  }
+  .encryption-scroll::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #60a5fa, #a855f7);
+  }
+  
+  /* ============================
+     QR IMAGE BOX
+  =============================== */
+  
+  .qr-box {
+    border-radius: 10px;
+    background: black;
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+  }
+  

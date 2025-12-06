@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Decryption</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="style.css"/>
+
+  <!-- QR decode library -->
+  <script src="https://unpkg.com/jsqr"></script>
+
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: black;
+    }
+
+    /* Neon Scrollbar */
+    .decrypt-scroll::-webkit-scrollbar {
+      width: 6px;
+    }
+    .decrypt-scroll::-webkit-scrollbar-track {
+      background: rgba(255,255,255,0.05);
+      border-radius: 10px;
+    }
+    .decrypt-scroll::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #3b82f6, #9333ea);
+      border-radius: 10px;
+      box-shadow: 0 0 8px #3b82f6;
+    }
+    .decrypt-scroll::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(180deg, #60a5fa, #a855f7);
+    }
+
+    .crypto-box {
+      background: #111;
+      border: 1px solid #3b82f6;
+      padding: 12px;
+      border-radius: 10px;
+      color: #93c5fd;
+      resize: none;
+      width: 100%;
+      outline: none;
+      transition: 0.2s ease;
+      box-shadow: 0 0 10px rgba(59,130,246,0.4);
+    }
+    .crypto-box:focus {
+      border-color: #9333ea;
+      box-shadow: 0 0 12px #9333ea;
+    }
+
+    .qr-preview {
+      width: 180px;
+      height: 180px;
+      background: black;
+      border-radius: 10px;
+      box-shadow: 0 0 12px #3b82f6;
+      object-fit: contain;
+      margin: auto;
+    }
+
+    .help-btn {
+      background: #a020f0;
+      padding: 10px 18px;
+      border-radius: 12px;
+      color: white;
+      font-weight: bold;
+      box-shadow: 0 0 12px #a020f0;
+      transition: 0.2s;
+    }
+    .help-btn:hover { transform: scale(1.05); }
+  </style>
+</head>
+
+<body class="text-blue-300 h-screen w-screen flex items-center justify-center">
+
+<!-- HELP BUTTON -->
+<button onclick="openHelp()" class="help-btn fixed top-4 right-4 z-50">❓ Help</button>
+
+<!-- MAIN CONTAINER -->
+<div class="w-[90%] max-w-4xl h-[90%] bg-neutral-900 rounded-xl shadow-neon p-6
+            grid grid-rows-[auto_1fr_auto] gap-4">
+
+  <!-- HEADER WITH BACK BTN -->
+  <div class="flex items-center justify-between mb-2">
+      <button onclick="location.href='index.html'" class="btn neon-btn-green px-4 h-10">⬅ Back</button>
+      <h2 class="text-3xl font-bold text-blue-400 flex-1 text-center">🔓 Decryption</h2>
+      <div class="w-20"></div>
+  </div>
+
+  <!-- SCROLL AREA -->
+  <div class="decrypt-scroll overflow-y-auto pr-3 space-y-6">
+
+      <!-- UPLOAD QR -->
+      <div class="text-center">
+        <h3 class="label">Upload QR Code</h3>
+
+        <img id="qrPreview" class="qr-preview" src="" alt="QR Preview">
+
+        <input type="file" id="qrUpload" accept="image/*"
+               class="mt-3 w-full text-center bg-neutral-800 p-3 rounded-lg cursor-pointer border border-blue-500 text-blue-300"/>
+      </div>
+
+      <!-- ENCRYPTED TEXT -->
+      <div>
+        <label class="label">Encrypted Text</label>
+        <textarea id="cipherText" class="crypto-box h-28"
+          placeholder="QR decode result will appear here..."></textarea>
+      </div>
+
+      <!-- KEY -->
+      <div>
+        <label class="label">Crypto Key</label>
+        <textarea id="cryptoKey" class="crypto-box h-28"
+          placeholder="Paste the key from the sender"></textarea>
+      </div>
+
+      <!-- DECRYPT BUTTON -->
+      <button id="decryptBtn"
+              class="btn neon-btn-blue w-full h-12 text-lg">
+        Decrypt
+      </button>
+
+      <!-- OUTPUT -->
+      <div>
+        <label class="label">Decrypted Text</label>
+        <textarea id="decrypted" class="crypto-box h-28" readonly></textarea>
+      </div>
+
+  </div>
+
+  <!-- FOOTER SPACER -->
+  <div></div>
+</div>
+
+<!-- HELP MODAL -->
+<div id="helpModal"
+     class="fixed inset-0 bg-black/70 hidden flex justify-center items-center z-50">
+  <div class="bg-neutral-900 p-6 rounded-xl shadow-neon w-[90%] max-w-xl">
+
+    <h2 class="text-2xl font-bold text-blue-400 mb-4">📘 How to Decrypt</h2>
+
+    <p>➡ Upload the QR code from the sender.</p>
+    <p>➡ The encrypted text will auto-fill.</p>
+    <p>➡ Paste the crypto key from sender.</p>
+    <p>➡ Tap <b>Decrypt</b>.</p>
+
+    <button onclick="closeHelp()" class="btn neon-btn-blue w-full mt-4">Close</button>
+  </div>
+</div>
+
+<!-- JS LOAD -->
+<script type="module">
+  window.addEventListener("DOMContentLoaded", () => import("./app-decrypt.js"));
+</script>
+
+<!-- QR IMAGE DECODER -->
+<script>
+document.getElementById("qrUpload").addEventListener("change", function () {
+    const file = this.files[0];
+    if (!file) return;
+
+    const img = document.getElementById("qrPreview");
+    img.src = URL.createObjectURL(file);
+
+    const reader = new FileReader();
+    reader.onload = function () {
+        const imgObj = new Image();
+        imgObj.src = reader.result;
+        imgObj.onload = function () {
+            const canvas = document.createElement("canvas");
+            const ctx = canvas.getContext("2d");
+            canvas.width = imgObj.width;
+            canvas.height = imgObj.height;
+            ctx.drawImage(imgObj, 0, 0);
+
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const decoded = jsQR(imageData.data, canvas.width, canvas.height);
+
+            if (decoded) {
+                document.getElementById("cipherText").value = decoded.data;
+            } else {
+                alert("QR decode failed — upload a clearer image.");
+            }
+        };
+    };
+    reader.readAsDataURL(file);
+});
+
+function openHelp() { document.getElementById("helpModal").classList.remove("hidden"); }
+function closeHelp() { document.getElementById("helpModal").classList.add("hidden"); }
+</script>
+
+</body>
+</html>
